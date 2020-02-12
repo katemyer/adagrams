@@ -159,7 +159,7 @@ puts letters_in_hand
 puts "What's your word?"
 user_input = gets.chomp.upcase
 your_words = []
-def uses_available_letters(input, letters_in_hand)
+def uses_available_letters?(input, letters_in_hand)
     word_characters = input.split("")
     word_characters.each do |letter|
         if !letters_in_hand.include?(letter)
@@ -173,7 +173,7 @@ def uses_available_letters(input, letters_in_hand)
     return true
 end
 
-isUserInputValid = uses_available_letters(user_input, letters_in_hand)
+isUserInputValid = uses_available_letters?(user_input, letters_in_hand)
 
 # Wave 3
 # We want a method that returns the score of a given word as defined by the Adagrams game.
@@ -196,9 +196,27 @@ def score_word (word)
     end
     return score
 end
-
+#Checking ONE time, prints only if true.
 if isUserInputValid
     puts "You're score is #{score_word(user_input)}."
 else
     puts "Your input is not valid, therefore not scored."
+end
+
+
+
+#Optional
+require 'csv'
+ENGLISH_DICTIONARY = CSV.parse(File.read("../assets/dictionary-english.csv"), headers: true)
+
+def is_in_english_dict? (input)
+    #https://www.rubyguides.com/2018/10/parse-csv-ruby/
+    #method looking at the column which is list of words in the dictionary
+    return ENGLISH_DICTIONARY.by_col[0].include?(input.downcase)
+end
+#Checking ONE time, prints only if true.
+if isUserInputValid
+    puts "Your word is in the Engligh Dictionary: #{is_in_english_dict?(user_input)}."
+else
+    puts "Your input is not valid, therefore not checked in English dictionary."
 end
