@@ -158,20 +158,22 @@ puts letters_in_hand
 
 puts "What's your word?"
 user_input = gets.chomp.upcase
-
-def uses_available_letters(letters, hand)
-    word_characters = letters.split("") 
-    puts word_characters
+your_words = []
+def uses_available_letters(input, letters_in_hand)
+    word_characters = input.split("")
     word_characters.each do |letter|
-        puts letter
-        if !hand.include?(letter) 
-           return false 
+        if !letters_in_hand.include?(letter)
+            puts "You're cheating!"
+            return false
+        else
+            letters_in_hand.delete_at(letters_in_hand.index(letter))
+            # your_words << input
         end
     end
     return true
 end
 
-puts uses_available_letters(user_input, letters_in_hand)
+isUserInputValid = uses_available_letters(user_input, letters_in_hand)
 
 # Wave 3
 # We want a method that returns the score of a given word as defined by the Adagrams game.
@@ -185,5 +187,18 @@ puts uses_available_letters(user_input, letters_in_hand)
 # If the length of the word is 7, 8, 9, or 10, then the word gets an additional 8 points
 
 def score_word (word)
-    return 
+    score = 0
+    if (word.length >= 7) && (word.length <= 10)
+        score = 8
+    end
+    word.split("").each do |letter|
+       score = LETTER_INFO[letter][:score] + score
+    end
+    return score
+end
+
+if isUserInputValid
+    puts "You're score is #{score_word(user_input)}."
+else
+    puts "Your input is not valid, therefore not scored."
 end
