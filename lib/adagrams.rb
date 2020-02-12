@@ -159,14 +159,16 @@ puts letters_in_hand
 puts "What's your word?"
 user_input = gets.chomp.upcase
 your_words = []
+
 def uses_available_letters?(input, letters_in_hand)
+    current_hand = letters_in_hand.dup
     word_characters = input.split("")
     word_characters.each do |letter|
-        if !letters_in_hand.include?(letter)
+        if !current_hand.include?(letter)
             puts "You're cheating!"
             return false
         else
-            letters_in_hand.delete_at(letters_in_hand.index(letter))
+            current_hand.delete_at(current_hand.index(letter))
             # your_words << input
         end
     end
@@ -187,18 +189,19 @@ isUserInputValid = uses_available_letters?(user_input, letters_in_hand)
 # If the length of the word is 7, 8, 9, or 10, then the word gets an additional 8 points
 
 def score_word (word)
+    word
     score = 0
     if (word.length >= 7) && (word.length <= 10)
         score = 8
     end
     word.split("").each do |letter|
-       score = LETTER_INFO[letter][:score] + score
+       score = LETTER_INFO[letter.upcase][:score] + score
     end
     return score
 end
 #Checking ONE time, prints only if true.
 if isUserInputValid
-    puts "You're score is #{score_word(user_input)}."
+    puts "Your score is #{score_word(user_input)}."
 else
     puts "Your input is not valid, therefore not scored."
 end
@@ -207,7 +210,7 @@ end
 
 #Optional
 require 'csv'
-ENGLISH_DICTIONARY = CSV.parse(File.read("../assets/dictionary-english.csv"), headers: true)
+ENGLISH_DICTIONARY = CSV.parse(File.read("/Users/katemangubat/Developer/projects/adagrams/assets/dictionary-english.csv"), headers: true)
 
 def is_in_english_dict? (input)
     #https://www.rubyguides.com/2018/10/parse-csv-ruby/

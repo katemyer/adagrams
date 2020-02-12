@@ -90,7 +90,7 @@ describe 'Adagrams' do
       expect(score_word("XXXXXXXXX")).must_equal 80
     end
   end
-
+#WAVE 4 tests 12-18
   describe 'highest_score_from method' do
     it 'returns a hash that contains the word and score of best word in an array' do
       words = ['X', 'XX', 'XXX', 'XXXX']
