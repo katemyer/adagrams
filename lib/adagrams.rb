@@ -150,7 +150,7 @@ end
 
 def uses_available_letters?(input, letters_in_hand)
     current_hand = letters_in_hand.dup
-    word_characters = input.split("")
+    word_characters = input.upcase.split("")
     word_characters.each do |letter|
         if !current_hand.include?(letter)
             puts "You're cheating!"
@@ -190,11 +190,38 @@ end
 # Returns a single hash that represents the data of a winning word and its score. The hash should have the following keys:
 # :word, whose value is a string of a word
 # :score, whose value is the score of that word
+
 # In the case of tie in scores, use these tie-breaking rules:
 # prefer the word with the fewest letters...
 # ...unless one word has 10 letters. If the top score is tied between multiple words and one is 10 letters long, choose the one with 10 letters over the one with fewer tiles
 # If the there are multiple words that are the same score and the same length, pick the first one in the supplied list
 
+def highest_score_from (words)
+    word_hash = {
+        #:word => "hello",
+        #:score => score_word("hello")
+    }
+    #words = ["tree", "the", "they", "them"]
+    highest_score = 0
+    highest_word = ""
+    words.each do |word|
+        word_score = score_word(word)
+        if word_score > highest_score #check for highest score
+            highest_score = word_score
+            highest_word = word
+        elsif word_score == highest_score #tie break block until 218
+            if highest_word.length != 10
+                if (word.length == 10)  #If the there are multiple words that are the same score and the same length, pick the first one in the supplied list. Setting the first word as the winner.
+                    highest_word = word
+                elsif (word.length < highest_word.length)
+                    highest_word = word
+                end
+            end            
+        end
+    end
+    word_hash = {:word => highest_word, :score => highest_score}
+    return word_hash
+end
 
 
 # Optional: Wave 5
@@ -208,7 +235,10 @@ end
 # Uses the English dictionary found in assets/dictionary-english.csv
 
 require "csv"
-#ENGLISH_DICTIONARY = CSV.parse(File.read("../assets/dictionary-english.csv"), headers: true)
+
+# https://stackoverflow.com/a/29148595
+puts __dir__
+ENGLISH_DICTIONARY = CSV.parse(File.read(__dir__+"/../assets/dictionary-english.csv"), headers: true) #relative to ADAGRAMS not the workspace
 def is_in_english_dict?(input)
     #https://www.rubyguides.com/2018/10/parse-csv-ruby/
     #method looking at the column which is list of words in the dictionary
@@ -239,7 +269,7 @@ def play_game
 
     #Checking ONE time, prints only if true.
     if isUserInputValid
-    #    puts "Your word is in the Engligh Dictionary: #{is_in_english_dict?(user_input)}."
+       puts "Your word is in the Engligh Dictionary: #{is_in_english_dict?(user_input)}."
     else
         puts "Your input is not valid, therefore not checked in English dictionary."
     end
