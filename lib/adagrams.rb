@@ -210,7 +210,7 @@ end
 
 #Optional
 require 'csv'
-ENGLISH_DICTIONARY = CSV.parse(File.read("/Users/katemangubat/Developer/projects/adagrams/assets/dictionary-english.csv"), headers: true)
+ENGLISH_DICTIONARY = CSV.parse(File.read("./assets/dictionary-english.csv"), headers: true)
 
 def is_in_english_dict? (input)
     #https://www.rubyguides.com/2018/10/parse-csv-ruby/
