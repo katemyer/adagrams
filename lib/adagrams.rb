@@ -158,20 +158,20 @@ puts letters_in_hand
 
 puts "What's your word?"
 user_input = gets.chomp.upcase
-words = []
+@words = []
 
-def uses_available_letters?(input, letters_in_hand, words)
-    current_hand = letters_in_hand.dup
-    word_characters = input.split("")
-    word_characters.each do |letter|
-        if !current_hand.include?(letter)
-            puts "You're cheating!"
-            return false
-        else
-            current_hand.delete_at(current_hand.index(letter))
-        end
+def uses_available_letters?(input, letters_in_hand)
+  current_hand = letters_in_hand.dup
+  word_characters = input.split("")
+  word_characters.each do |letter|
+    if !current_hand.include?(letter)
+      puts "You're cheating!"
+      return false
+    else
+      current_hand.delete_at(current_hand.index(letter))
     end
   end
+  @words << input
   return true
 end
 
@@ -189,35 +189,37 @@ isUserInputValid = uses_available_letters?(user_input, letters_in_hand)
 # If the length of the word is 7, 8, 9, or 10, then the word gets an additional 8 points
 
 def score_word(word)
+  word
   score = 0
   if (word.length >= 7) && (word.length <= 10)
     score = 8
   end
   word.split("").each do |letter|
-    score = LETTER_INFO[letter][:score] + score
+    score = LETTER_INFO[letter.upcase][:score] + score
   end
   return score
 end
 
 #Checking ONE time, prints only if true.
 if isUserInputValid
-    puts "Your score is #{score_word(user_input)}."
+  puts "Your score is #{score_word(user_input)}."
 else
   puts "Your input is not valid, therefore not scored."
 end
 
-#Optional
-# require 'csv'
-# ENGLISH_DICTIONARY = CSV.parse(File.read("../assets/dictionary-english.csv"), headers: true)
+# #Optional
+# require "csv"
+# ENGLISH_DICTIONARY = CSV.parse(File.read("./assets/dictionary-english.csv"), headers: true)
 
-# def is_in_english_dict? (input)
-#     #https://www.rubyguides.com/2018/10/parse-csv-ruby/
-#     #method looking at the column which is list of words in the dictionary
-#     return ENGLISH_DICTIONARY.by_col[0].include?(input.downcase)
+# def is_in_english_dict?(input)
+#   #https://www.rubyguides.com/2018/10/parse-csv-ruby/
+#   #method looking at the column which is list of words in the dictionary
+#   return ENGLISH_DICTIONARY.by_col[0].include?(input.downcase)
 # end
+
 # #Checking ONE time, prints only if true.
 # if isUserInputValid
-#     puts "Your word is in the Engligh Dictionary: #{is_in_english_dict?(user_input)}."
+#   puts "Your word is in the Engligh Dictionary: #{is_in_english_dict?(user_input)}."
 # else
-#     puts "Your input is not valid, therefore not checked in English dictionary."
+#   puts "Your input is not valid, therefore not checked in English dictionary."
 # end
