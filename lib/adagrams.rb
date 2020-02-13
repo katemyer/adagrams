@@ -158,17 +158,18 @@ puts letters_in_hand
 
 puts "What's your word?"
 user_input = gets.chomp.upcase
-your_words = []
+words = []
 
-def uses_available_letters?(input, letters_in_hand)
-  word_characters = input.split("")
-  word_characters.each do |letter|
-    if !letters_in_hand.include?(letter)
-      puts "You're cheating!"
-      return false
-    else
-      letters_in_hand.delete_at(letters_in_hand.index(letter))
-      # your_words << input
+def uses_available_letters?(input, letters_in_hand, words)
+    current_hand = letters_in_hand.dup
+    word_characters = input.split("")
+    word_characters.each do |letter|
+        if !current_hand.include?(letter)
+            puts "You're cheating!"
+            return false
+        else
+            current_hand.delete_at(current_hand.index(letter))
+        end
     end
   end
   return true
@@ -200,7 +201,7 @@ end
 
 #Checking ONE time, prints only if true.
 if isUserInputValid
-  puts "You're score is #{score_word(user_input)}."
+    puts "Your score is #{score_word(user_input)}."
 else
   puts "Your input is not valid, therefore not scored."
 end
