@@ -239,7 +239,7 @@ require "csv"
 ENGLISH_DICTIONARY = CSV.parse(File.read(__dir__ + "/../assets/dictionary-english.csv"), headers: true) #relative to ADAGRAMS not the workspace
 
 def is_in_english_dict?(input)
-  #https://www.rubyguides.com/2018/10/parse-csv-ruby/
+  # https://www.rubyguides.com/2018/10/parse-csv-ruby/
   #method looking at the column which is list of words in the dictionary
   return ENGLISH_DICTIONARY.by_col[0].include?(input.downcase)
 end
